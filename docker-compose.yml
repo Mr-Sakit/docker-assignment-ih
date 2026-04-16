@@ -36,8 +36,6 @@ services:
       args:
         - REACT_APP_API_URL=http://9.223.179.72:3001
     container_name: notes-frontend
-    # ... digər hissələr eyni qalır
-    container_name: notes-frontend
     restart: always
     ports:
       - "3000:80"
