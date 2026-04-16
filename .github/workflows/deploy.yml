@@ -1,0 +1,30 @@
+name: Deploy Notes App to Azure
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy to Azure VM via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: 9.223.179.72
+          username: ${{ secrets.AZURE_VM_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            if [ ! -d "~/docker-assignment-ih" ]; then
+              git clone https://github.com/Mr-Sakit/docker-assignment-ih.git ~/docker-assignment-ih
+            fi
+            cd ~/docker-assignment-ih
+
+            git pull origin main
+ 
+            sudo docker-compose down
+            sudo docker-compose up --build -d
